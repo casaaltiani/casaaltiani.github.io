@@ -10,7 +10,7 @@ section {
 }
 
 .quote {
-    color: rgba(0,0,0,.1);
+    /*color: rgba(0,0,0,.1);*/
     text-align: center;
     margin-bottom: 30px;
 }

@@ -46,3 +46,73 @@ function slideIn() {
 		setTimeout(slideIn, 1);
 	}
 }
+
+function validateTextInput( input ){
+	return input.length > 5
+}
+
+function validateEmail(email){	
+	var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+
+function contactFormInputValidate( ){
+	
+	var nameInput = document.getElementById("InputName").value ;
+	var emailInput = document.getElementById("InputEmail").value ;
+	var messageInput = document.getElementById("InputMessage").value ;
+
+	if( validateTextInput( nameInput) && validateEmail( emailInput) && validateTextInput( messageInput) ) {
+		$("#contactFormSubmit").removeAttr('disabled');
+	}else{
+		$("#contactFormSubmit").attr('disabled', true);
+	}
+}
+
+
+$("#contactFormSubmit").click( function (e) {
+	e.preventDefault();
+	var nameInput = document.getElementById("InputName").value ;
+	var emailInput = document.getElementById("InputEmail").value ;
+	var messageInput = document.getElementById("InputMessage").value ;
+
+	var jsonObject = {};
+	jsonObject["mailFrom"] = "casaaltiani.mail.from";
+	jsonObject["mailTo"] = "casaaltiani.mail.to";
+	jsonObject["Subject"] = "Casa Altiani - Web Message ";
+	jsonObject["Name"] = nameInput;
+	jsonObject["Email"] = emailInput;
+	jsonObject["Message"] = messageInput ;
+
+	sendPostRequest("sendMail", JSON.stringify(jsonObject));
+	document.getElementById("contactForm").reset();
+});
+
+
+
+/* submit the POST request to the remote server */
+function sendPostRequest( urlPath, requestBody ){
+
+	$.ajax({ 
+		url: "http://188.166.168.128:48100/" + urlPath, 
+		//url: "http://localhost:8080/" + urlPath, 
+		method : "POST",
+		headers: {
+			"Content-Type" : "application/json"
+		},
+		data : requestBody,
+		dataType: 'json',
+
+		complete: function() {
+			console.log("post request complete")
+		},
+
+		success: function() {
+			console.log("success sending the email!")
+		},
+
+		error: function() {
+			console.log("an error occured")
+		}
+	});
+}

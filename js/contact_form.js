@@ -86,6 +86,7 @@ $("#contactFormSubmit").click( function (e) {
 
 	sendPostRequest("sendMail", JSON.stringify(jsonObject));
 	document.getElementById("contactForm").reset();
+	$("#contactFormSubmit").attr('disabled', true);
 });
 
 
@@ -94,7 +95,7 @@ $("#contactFormSubmit").click( function (e) {
 function sendPostRequest( urlPath, requestBody ){
 
 	$.ajax({ 
-		url: "http://188.166.168.128:48100/" + urlPath, 
+		url: "http://188.166.168.128:48101/" + urlPath, 
 		//url: "http://localhost:8080/" + urlPath, 
 		method : "POST",
 		headers: {
@@ -111,8 +112,11 @@ function sendPostRequest( urlPath, requestBody ){
 			console.log("success sending the email!")
 		},
 
-		error: function() {
+		error: function(jqXHR, textStatus, errorThrown) {
 			console.log("an error occured")
+			console.log(jqXHR)
+			console.log(textStatus)
+			console.log(errorThrown)
 		}
 	});
 }
